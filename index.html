@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ask Her Out 🥰</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pastel-pink: #fdf2f4;
+            --main-pink: #ffafbd;
+            --dark-pink: #ff8fa3;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--pastel-pink);
+            font-family: 'Quicksand', sans-serif;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        #container {
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            z-index: 10;
+        }
+
+        .image-container {
+            margin-bottom: 20px;
+            min-height: 220px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .chibi-img {
+            width: 200px;
+            height: auto;
+            border-radius: 20px;
+            filter: drop-shadow(0 10px 10px rgba(255, 175, 189, 0.3));
+        }
+
+        h1 {
+            color: var(--dark-pink);
+            font-size: 1.7rem;
+            margin-bottom: 30px;
+            min-height: 2.5em; /* Prevents text jumping */
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 35px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s all ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        #yesBtn {
+            background-color: var(--white);
+            color: var(--dark-pink);
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
+            background-color: var(--main-pink);
+            color: white;
+        }
+
+        #noBtn {
+            background-color: var(--white);
+            color: #999;
+            position: absolute;
+            left: 55%;
+        }
+
+        .hidden { display: none !important; }
+
+        .fade-in {
+            animation: fadeIn 0.8s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Question Screen -->
+    <div id="askScreen">
+        <div id="container">
+            <div class="image-container">
+                <!-- Initial Cute GIF -->
+                <img id="mainGif" src="kiss.gif" alt="Bubu Dudu Cute" class="chibi-img">
+            </div>
+            <h1 id="questionText">Do you love me Nikita? 🥰</h1>
+            <div class="btn-group">
+                <button id="yesBtn">Yes</button>
+                <button id="noBtn">No</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Success Screen -->
+    <div id="successScreen" class="hidden">
+        <div id="container" class="fade-in">
+            <div class="image-container">
+                <img src="hug.gif" alt="Bubu Dudu Hug" class="chibi-img">
+            </div>
+            <h1>Hehehehe, I know it! 😘❤️</h1>
+        </div>
+    </div>
+
+    <script>
+        const noBtn = document.getElementById('noBtn');
+        const yesBtn = document.getElementById('yesBtn');
+        const questionText = document.getElementById('questionText');
+        const mainGif = document.getElementById('mainGif');
+        const askScreen = document.getElementById('askScreen');
+        const successScreen = document.getElementById('successScreen');
+
+        let noCount = 0;
+
+        // Sequence of content: Text + Matching GIF
+        const scenarios = [
+            {
+                text: "Manja na! Kitna bhav khaegi 😭",
+                img: "cry.gif" // Sad Bubu
+            },
+            {
+                text: "Soch le ache se 😕",
+                img: "cring.gif" // Crying Dudu
+            },
+            {
+                text: "Ek aur baar soch le 😤",
+                img: "angry.gif" // Angry Bubu
+            },
+            {
+                text: "Nikita please... 🥺",
+                img: "please.gif" // Pleading
+            },
+            {
+                text: "You're breaking Bubu's heart 💔",
+                img: "heart.gif" // Heartbreak
+            }
+        ];
+
+        function moveButton() {
+            // Random movement logic
+            const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+
+            noBtn.style.position = "fixed";
+            noBtn.style.left = randomX + "px";
+            noBtn.style.top = randomY + "px";
+
+            // Update Text and GIF
+            if (noCount < scenarios.length) {
+                questionText.innerText = scenarios[noCount].text;
+                mainGif.src = scenarios[noCount].img;
+                noCount++;
+            } else {
+                // If they keep trying, stay on the last sad message
+                questionText.innerText = "Bas ab haan bol do! 😤❤️";
+            }
+        }
+
+        // No Button Event Listeners
+        noBtn.addEventListener('mouseenter', moveButton);
+        noBtn.addEventListener('click', moveButton);
+        noBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            moveButton();
+        });
+
+        // Yes Button Event Listener
+        yesBtn.addEventListener('click', () => {
+            askScreen.classList.add('hidden');
+            successScreen.classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
